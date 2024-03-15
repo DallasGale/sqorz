@@ -1,15 +1,19 @@
-const request = require("request");
+import fetch from "node-fetch";
 
-module.exports = (req, res) => {
+export default async function handler(req, res) {
   const targetUrl =
     "https://our.sqorz.com/json/region/au" +
-    req.url.replace("/api/reqion_au", "");
+    req.url.replace("/api/region_au", "");
 
-  req
-    .pipe(request(targetUrl))
-    .on("error", (err) => {
-      console.error(err);
-      res.status(500).send("Proxy error");
-    })
-    .pipe(res);
-};
+  try {
+    const response = await fetch(targetUrl);
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    const data = await response.text(); // or response.json() if the API returns JSON
+    res.status(200).send(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Proxy error");
+  }
+}
