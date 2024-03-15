@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   const fetchOrgs = async () => {
-    fetch("https://sqorz-project.vercel.app/api/region_au", {
+    fetch("https://sqorz-project.vercel.app/api/sqorz/region_au", {
       mode: "cors",
     })
       .then((res) => res.json())
