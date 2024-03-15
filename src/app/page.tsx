@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   const fetchOrgs = async () => {
-    fetch("http://localhost:3001/proxy/")
+    fetch("https://our.sqorz.com/json/region/au")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
