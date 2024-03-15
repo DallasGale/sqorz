@@ -6,11 +6,14 @@ import { useEffect } from "react";
 
 export default function Home() {
   const fetchOrgs = async () => {
-    fetch("http://localhost:3001/proxy/")
+    fetch("https://sqorz-project.vercel.app/api/region_au", {
+      mode: "cors",
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-      });
+      })
+      .catch((error) => console.error("Error fetching data:", error));
   };
 
   useEffect(() => {
