@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   const fetchOrgs = async () => {
-    fetch("https://our.sqorz.com/json/region/au")
+    fetch("http://localhost:3001/proxy/")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchOrgs();
-  });
+  }, []);
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <div>
