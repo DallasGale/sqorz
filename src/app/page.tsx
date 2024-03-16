@@ -1,46 +1,60 @@
 "use client";
 
-// import Image from "next/image";
-import { Button, Input, Select, TextInput } from "@mantine/core";
-import { useEffect } from "react";
+import { Button, Select } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { OrgType, formatOrgs } from "./helpers";
+import { fetchOrgs } from "./helpers/fetchOrgs";
+import { fetchEvents } from "./helpers/fetchEvent";
 
 export default function Home() {
-  const fetchOrgs = async () => {
-    fetch("https://sqorz-project.vercel.app/api/sqorz/region_au", {
-      mode: "cors",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  };
+  const [orgs, setOrgs] = useState<OrgType | null>(null);
+  const [events, setEvents] = useState<string | null>(null);
+  const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchOrgs();
+    fetchOrgs(setOrgs);
   }, []);
+
+  useEffect(() => {
+    if (selectedOrg) {
+      fetchEvents(selectedOrg, setEvents);
+    }
+  }, [selectedOrg]);
+
+  console.log({ events });
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-24">
-      <div>
-        Step 1
-        <Select placeholder="Select Org" />
+    <main className="flex min-h-screen flex-col items-center">
+      <div className="flex  p-4 flex-row items-center gap-4">
+        <p>Step 1</p>
+        {orgs && (
+          <Select
+            value={selectedOrg}
+            onChange={setSelectedOrg}
+            placeholder="Select Org"
+            data={formatOrgs(orgs)}
+            searchable
+          />
+        )}
       </div>
 
-      <div>
-        Step 2
-        <Select placeholder="Select active series" />
+      <div className="flex  p-4 flex-row items-center gap-4">
+        {selectedOrg && (
+          <>
+            <p>Step 2</p>
+            <Select placeholder="Select active series" />
+          </>
+        )}
       </div>
 
-      <div>
-        Step 3
+      <div className="flex   p-4 flex-row items-center gap-4">
+        <p>Step 3</p>
         <Select placeholder="Select class" />
       </div>
-      <div>
-        Step 4<br />
+      <div className="flex p-4 flex-row items-center gap-4">
         <Button variant="outline">Show latest round results</Button>
       </div>
-      <div>
-        Step 4<br />
+      <div className="flex  p-4 flex-row items-center gap-4">
         <Button variant="outline">Show combined round leaders</Button>
       </div>
     </main>
