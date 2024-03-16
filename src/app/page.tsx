@@ -2,13 +2,14 @@
 
 import { Button, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { OrgType, formatOrgs } from "./helpers";
+import { EventType, OrgType, formatEvents, formatOrgs } from "./helpers";
 import { fetchOrgs } from "./helpers/fetchOrgs";
 import { fetchEvents } from "./helpers/fetchEvent";
 
 export default function Home() {
   const [orgs, setOrgs] = useState<OrgType | null>(null);
-  const [events, setEvents] = useState<string | null>(null);
+  const [events, setEvents] = useState<EventType | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedOrg) {
+      setEvents(null);
       fetchEvents(selectedOrg, setEvents);
     }
   }, [selectedOrg]);
@@ -39,10 +41,16 @@ export default function Home() {
       </div>
 
       <div className="flex  p-4 flex-row items-center gap-4">
-        {selectedOrg && (
+        {selectedOrg && events && (
           <>
             <p>Step 2</p>
-            <Select placeholder="Select active series" />
+            <Select
+              placeholder="Select series"
+              value={selectedEvent}
+              onChange={setSelectedEvent}
+              data={formatEvents(events)}
+              searchable
+            />
           </>
         )}
       </div>

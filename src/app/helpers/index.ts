@@ -7,13 +7,35 @@ export type OrgType = {
   accounts: AccountsType[];
 };
 
-export const formatOrgs = (orgs: OrgType) => {
-  if (orgs) {
-    return orgs.accounts.map((org) => {
+type EventsType = {
+  eventName: string;
+  eventId: string;
+};
+
+export type EventType = {
+  events: EventsType[];
+};
+
+export const formatOrgs = (data: OrgType) => {
+  if (data) {
+    return data.accounts.map((org) => {
       return {
         label: org.accountName,
         value: org.accountCode,
       };
     });
+  }
+};
+
+export const formatEvents = (data: EventType) => {
+  if (data) {
+    return data.events
+      .filter((event) => event.eventName.toLowerCase().includes("series"))
+      .map((event) => {
+        return {
+          label: event.eventName,
+          value: event.eventId,
+        };
+      });
   }
 };
