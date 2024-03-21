@@ -1,4 +1,4 @@
-const pointStructure = {
+export const pointStructure = {
   1: 80,
   2: 74,
   3: 68,
